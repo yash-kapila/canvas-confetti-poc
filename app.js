@@ -2,7 +2,7 @@
   let requestID = '';
 
   const canvasConfiguration = {
-    maxShapes: 50,
+    maxShapes: 100,
     props: ['circle', 'rectangle', 'line', 'triangle'],
     colors: ['green', 'red', 'blue', 'purple', 'gold', '#69E8FA', '#FF223F', '#FF71DB', 'bisque'],
     speed: 10,
@@ -48,18 +48,20 @@
     };
   };
 
+  const getConfettiShape = (config) => ({
+    xAxis: utils.getRandomNumber(window.innerWidth),
+    yAxis: utils.getRandomNumber(window.innerHeight),
+    shape: config.props[utils.getRandomNumber(config.props.length)],
+    color: config.colors[utils.getRandomNumber(config.colors.length)],
+    speed: utils.getRandomNumber(config.speed) + 5,
+    rotate: utils.getRandomNumber(config.maxRotate),
+  });
+
   const getConfettiShapes = (config) => {
     const shapes = [];
 
     for (let i = 0; i < config.maxShapes; i++) {
-      shapes.push({
-        xAxis: utils.getRandomNumber(window.innerWidth),
-        yAxis: 0,
-        shape: config.props[utils.getRandomNumber(config.props.length)],
-        color: config.colors[utils.getRandomNumber(config.colors.length)],
-        speed: utils.getRandomNumber(config.speed) || 5,
-        rotate: utils.getRandomNumber(config.maxRotate),
-      });
+      shapes.push(getConfettiShape(config));
     }
 
     return shapes;
@@ -74,6 +76,7 @@
 
     for (const shape of shapes) {
       if (shape.yAxis >= canvas.height) {
+        shape.xAxis = utils.getRandomNumber(window.innerWidth);
         shape.yAxis = 0;
       }
       shape.yAxis = shape.yAxis + shape.speed;
@@ -93,6 +96,7 @@
   };
 
   const startConfetti = (config, canvas, ctx) => {
+    stopConfetti(ctx);
     render(config, canvas, ctx);
   };
 
