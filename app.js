@@ -9,6 +9,10 @@
     maxRotate: 50,
   };
 
+  const utils = {
+    getRandomNumber: (size) => Math.floor(Math.random() * size),
+  };
+
   const renderShapesOnCanvas = (ctx, particle) => {
     switch (particle.shape) {
       case 'circle': {
@@ -44,19 +48,17 @@
     };
   };
 
-  const getRandomNumber = (size) => Math.floor(Math.random() * size);
-
   const getConfettiShapes = (config) => {
     const shapes = [];
 
     for (let i = 0; i < config.maxShapes; i++) {
       shapes.push({
-        xAxis: getRandomNumber(window.innerWidth),
+        xAxis: utils.getRandomNumber(window.innerWidth),
         yAxis: 0,
-        shape: config.props[getRandomNumber(config.props.length)],
-        color: config.colors[getRandomNumber(config.colors.length)],
-        speed: getRandomNumber(config.speed) || 5,
-        rotate: getRandomNumber(config.maxRotate),
+        shape: config.props[utils.getRandomNumber(config.props.length)],
+        color: config.colors[utils.getRandomNumber(config.colors.length)],
+        speed: utils.getRandomNumber(config.speed) || 5,
+        rotate: utils.getRandomNumber(config.maxRotate),
       });
     }
 
@@ -70,15 +72,15 @@
   const drawShapes = (shapes, ctx, canvas, config) => {
     clearCanvas(ctx, canvas);
 
-    for (let i = 0; i < config.maxShapes; i++) {
-      if (shapes[i].yAxis >= canvas.height) {
-        shapes[i].yAxis = 0;
+    for (const shape of shapes) {
+      if (shape.yAxis >= canvas.height) {
+        shape.yAxis = 0;
       }
-      shapes[i].yAxis = shapes[i].yAxis + shapes[i].speed;
+      shape.yAxis = shape.yAxis + shape.speed;
       
       ctx.save();
-      ctx.fillStyle = shapes[i].color;
-      renderShapesOnCanvas(ctx, shapes[i]);
+      ctx.fillStyle = shape.color;
+      renderShapesOnCanvas(ctx, shape);
       ctx.restore();
     }
 
@@ -91,7 +93,7 @@
   };
 
   const startConfetti = (config, canvas, ctx) => {
-    requestID = render(config, canvas, ctx);
+    render(config, canvas, ctx);
   };
 
   const stopConfetti = (ctx) => {
