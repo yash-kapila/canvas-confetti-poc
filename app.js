@@ -4,7 +4,7 @@
   const canvasConfiguration = {
     maxShapes: 100,
     props: ['circle', 'rectangle', 'line', 'triangle'],
-    colors: ['green', 'red', 'blue', 'purple', 'gold', '#69E8FA', '#FF223F', '#FF71DB', 'bisque'],
+    colors: ['#E85F42', '#F0FB05', '#27FF01', '#01FFC1', '#01B2FF', '#69E8FA', '#0104FF', '#FF01DC', '#FF0127'],
     speed: 10,
     maxRotate: 50,
   };
