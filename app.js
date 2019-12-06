@@ -31,7 +31,7 @@
       case 'line': {
         ctx.beginPath();
         ctx.moveTo(particle.xAxis, particle.yAxis);
-        ctx.lineTo(particle.xAxis + 5, particle.yAxis + 20);
+        ctx.lineTo(particle.xAxis + 5, particle.yAxis + 10);
         ctx.lineWidth = 5;
         ctx.strokeStyle = particle.color;
         ctx.stroke();
@@ -40,15 +40,15 @@
       case 'triangle': {
         ctx.beginPath();
         ctx.moveTo(particle.xAxis, particle.yAxis);
-        ctx.lineTo(particle.xAxis + 15, particle.yAxis + 15);
-        ctx.lineTo(particle.xAxis, particle.yAxis + 30);
+        ctx.lineTo(particle.xAxis + 10, particle.yAxis + 10);
+        ctx.lineTo(particle.xAxis, particle.yAxis + 20);
         ctx.fill();
         break;
       }
     };
   };
 
-  const getConfettiShape = (config) => ({
+  const getRandomShape = (config) => ({
     xAxis: utils.getRandomNumber(window.innerWidth),
     yAxis: utils.getRandomNumber(window.innerHeight),
     shape: config.props[utils.getRandomNumber(config.props.length)],
@@ -61,7 +61,7 @@
     const shapes = [];
 
     for (let i = 0; i < config.maxShapes; i++) {
-      shapes.push(getConfettiShape(config));
+      shapes.push(getRandomShape(config));
     }
 
     return shapes;
@@ -80,6 +80,7 @@
         shape.yAxis = 0;
       }
       shape.yAxis = shape.yAxis + shape.speed;
+      shape.xAxis = shape.xAxis - 1;
       
       ctx.save();
       ctx.fillStyle = shape.color;
@@ -90,14 +91,15 @@
     requestID = window.requestAnimationFrame(drawShapes.bind(null, shapes, ctx, canvas, config));
   };
 
-  const render = (config, canvas, ctx) => {
+  const renderConfettiAnimation = (config, canvas, ctx) => {
     const shapes = getConfettiShapes(config);
     requestID = window.requestAnimationFrame(drawShapes.bind(null, shapes, ctx, canvas, config));
   };
 
   const startConfetti = (config, canvas, ctx) => {
+    /* stop any existing canvas animation */
     stopConfetti(ctx);
-    render(config, canvas, ctx);
+    renderConfettiAnimation(config, canvas, ctx);
   };
 
   const stopConfetti = (ctx) => {
