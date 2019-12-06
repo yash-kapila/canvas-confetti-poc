@@ -3,9 +3,9 @@
 
   const canvasConfiguration = {
     maxShapes: 100,
-    props: ['circle', 'rectangle', 'line', 'triangle'],
+    props: ['circle', 'rectangle', 'line', 'triangle', 'square'],
     colors: ['#E85F42', '#F0FB05', '#27FF01', '#01FFC1', '#01B2FF', '#69E8FA', '#0104FF', '#FF01DC', '#FF0127'],
-    speed: 10,
+    speed: 5,
     maxRotate: 50,
   };
 
@@ -45,6 +45,13 @@
         ctx.fill();
         break;
       }
+      case 'square': {
+        ctx.translate(particle.xAxis + 20, particle.yAxis + 15);
+        ctx.rotate(particle.maxRotate);
+        ctx.fillRect(-10, -10, 10 , 10);
+        ctx.restore();
+        break;
+      }
     };
   };
 
@@ -80,7 +87,7 @@
         shape.yAxis = 0;
       }
       shape.yAxis = shape.yAxis + shape.speed;
-      shape.xAxis = shape.xAxis - 1;
+      // shape.xAxis = shape.xAxis - 1;
       
       ctx.save();
       ctx.fillStyle = shape.color;
@@ -93,7 +100,8 @@
 
   const renderConfettiAnimation = (config, canvas, ctx) => {
     const shapes = getConfettiShapes(config);
-    requestID = window.requestAnimationFrame(drawShapes.bind(null, shapes, ctx, canvas, config));
+    drawShapes(shapes, ctx, canvas, config);
+    // requestID = window.requestAnimationFrame(drawShapes.bind(null, shapes, ctx, canvas, config));
   };
 
   const startConfetti = (config, canvas, ctx) => {
